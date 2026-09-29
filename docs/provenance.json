@@ -11,15 +11,26 @@
     "source_url": "https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz",
     "genome_build": "hg19",
     "download": {
-      "http_status": null,
-      "timestamp": null,
-      "file_size_bytes": null,
-      "sha256": null
+      "http_status": 200,
+      "timestamp": "2026-09-29T15:54:47Z",
+      "file_size_bytes": 46754937,
+      "sha256": "0d6ed0ea97870916b830ccae349df94ca6f3cc68c025c79e784729af7f7136a4"
     },
     "schema": {
-      "delimiter": null,
-      "has_header": null,
-      "columns": []
+      "delimiter": "tab",
+      "has_header": true,
+      "columns": [
+        "CHR",
+        "POS",
+        "SNP",
+        "Tested_Allele",
+        "Other_Allele",
+        "Freq_Tested_Allele_in_HRS",
+        "BETA",
+        "SE",
+        "P",
+        "N"
+      ]
     }
   },
   "brain_atlas": {
@@ -48,7 +59,7 @@
     "parameters": {}
   },
   "verification_status": {
-    "gwas_artifact_verified": false,
+    "gwas_artifact_verified": true,
     "brain_atlas_verified": false,
     "magma_verified": false
   }
