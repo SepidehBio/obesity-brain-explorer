@@ -1,0 +1,57 @@
+project:
+  name: obesity-brain-explorer
+  version: "0.1.0"
+
+gwas:
+  study: "Yengo et al. 2018"
+  trait: "Body Mass Index"
+  consortium: "GIANT + UK Biobank"
+  artifact:
+    filename: "Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz"
+    url: "https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz"
+    local_path: "data/raw/gwas/Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz"
+  genome_build: "hg19"
+
+brain_atlas:
+  study: "Siletti et al. 2023"
+  atlas: "Human Brain Cell Atlas"
+  release: "v1.0"
+  source: "CELLxGENE"
+  dataset_id: null
+  collection_id: null
+  file:
+    format: null
+    url: null
+    local_path: null
+  annotation:
+    cell_type_field: null
+    brain_region_field: null
+  status: "TO_BE_FILLED"
+
+magma:
+  version: null
+  executable: null
+  gene_annotation:
+    file: null
+    version: null
+  ld_reference:
+    source: null
+    population: null
+    path: null
+  status: "TO_BE_FILLED"
+
+analysis:
+  gene_analysis:
+    software: "MAGMA"
+    method: "gene-analysis"
+  cell_type_analysis:
+    software: "MAGMA"
+    method: "gene-property"
+  thresholds:
+    p_value: null
+    maf: null
+    info: null
+
+output:
+  report_dir: "docs"
+  provenance: "docs/provenance.json"
