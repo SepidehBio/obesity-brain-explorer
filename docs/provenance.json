@@ -1,0 +1,55 @@
+{
+  "project": {
+    "name": "obesity-brain-explorer",
+    "pipeline_version": "0.1.0"
+  },
+  "gwas": {
+    "study": "Yengo et al. 2018",
+    "trait": "Body Mass Index",
+    "consortium": "GIANT + UK Biobank",
+    "artifact_filename": "Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz",
+    "source_url": "https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz",
+    "genome_build": "hg19",
+    "download": {
+      "http_status": null,
+      "timestamp": null,
+      "file_size_bytes": null,
+      "sha256": null
+    },
+    "schema": {
+      "delimiter": null,
+      "has_header": null,
+      "columns": []
+    }
+  },
+  "brain_atlas": {
+    "study": "Siletti et al. 2023",
+    "atlas": "Human Brain Cell Atlas",
+    "release": "v1.0",
+    "source": "CELLxGENE",
+    "collection_id": null,
+    "dataset_id": null,
+    "file_format": null,
+    "download_url": null,
+    "cell_type_annotation_field": null,
+    "brain_region_field": null
+  },
+  "magma": {
+    "version": null,
+    "gene_annotation_version": null,
+    "ld_reference": {
+      "source": null,
+      "population": null
+    }
+  },
+  "analysis": {
+    "gene_level_method": "MAGMA gene analysis",
+    "cell_type_method": "MAGMA gene-property",
+    "parameters": {}
+  },
+  "verification_status": {
+    "gwas_artifact_verified": false,
+    "brain_atlas_verified": false,
+    "magma_verified": false
+  }
+}
