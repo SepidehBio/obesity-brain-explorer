@@ -1,0 +1,79 @@
+name: Verify GWAS Artifact
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download GWAS artifact
+        id: download
+        run: |
+          mkdir -p data/raw/gwas
+          URL="https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz"
+          FILE="data/raw/gwas/Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz"
+          HTTP=$(curl -L -s -o "$FILE" -w "%{http_code}" "$URL")
+          echo "http_status=$HTTP" >> "$GITHUB_OUTPUT"
+          echo "file_path=$FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Compute checksum and size
+        id: checksum
+        run: |
+          FILE="${{ steps.download.outputs.file_path }}"
+          SHA=$(sha256sum "$FILE" | awk '{print $1}')
+          SIZE=$(stat -c%s "$FILE")
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
+          echo "file_size_bytes=$SIZE" >> "$GITHUB_OUTPUT"
+          echo "timestamp=$TIMESTAMP" >> "$GITHUB_OUTPUT"
+
+      - name: Extract header
+        id: header
+        run: |
+          FILE="${{ steps.download.outputs.file_path }}"
+          gzip -cd "$FILE" | head -n 1 | cat -A > data/header_raw.txt
+          gzip -cd "$FILE" | head -n 5 > data/header_preview.txt
+
+      - name: Write metadata file
+        run: |
+          mkdir -p docs
+          cat > docs/gwas-download-metadata.json <<EOF
+          {
+            "artifact_filename": "Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz",
+            "source_url": "https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz",
+            "http_status": ${{ steps.download.outputs.http_status }},
+            "download_timestamp": "${{ steps.checksum.outputs.timestamp }}",
+            "file_size_bytes": ${{ steps.checksum.outputs.file_size_bytes }},
+            "sha256": "${{ steps.checksum.outputs.sha256 }}"
+          }
+          EOF
+
+      - name: Upload header outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: gwas-header
+          path: |
+            data/header_raw.txt
+            data/header_preview.txt
+
+      - name: Commit metadata
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/gwas-download-metadata.json
+          git commit -m "Record GWAS artifact metadata" || echo "No changes to commit"
+          git push
+
+      - name: Clean large file
+        run: |
+          rm -f data/raw/gwas/Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz
+          rm -f data/header_raw.txt
+          rm -f data/header_preview.txt
